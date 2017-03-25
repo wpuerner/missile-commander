@@ -3,6 +3,8 @@ using System.Collections;
 
 public class City : MonoBehaviour {
 
+    public bool isAlive = true;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -17,7 +19,22 @@ public class City : MonoBehaviour {
     {
         if (col.gameObject.tag == "Explosion")
         {
-            Destroy(this.gameObject);
+            killCity();
         }
+    }
+
+    public void killCity()
+    {
+        isAlive = false;
+        this.GetComponent<SpriteRenderer>().enabled = false;
+        this.GetComponent<BoxCollider2D>().enabled = false;
+        GameObject.Find("GameController").GetComponent<GameController>().deadCities.Enqueue(this.gameObject);
+    }
+
+    public void reviveCity()
+    {
+        isAlive = true;
+        this.GetComponent<SpriteRenderer>().enabled = true;
+        this.GetComponent<BoxCollider2D>().enabled = false;
     }
 }

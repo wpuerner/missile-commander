@@ -35,6 +35,11 @@ public class EnemyMissile : MonoBehaviour {
             GameObject.Find("GameController").GetComponent<GameController>().score++;
         }
 
+        if(col.gameObject.name == "MapBoundary")
+        {
+            Destroy(this.gameObject);
+        }
+
         explodeMissile();
     }
 

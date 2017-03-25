@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Explosion
   - City
+  - Battery
   layers:
   - Default
   - TransparentFX

@@ -14,8 +14,8 @@ public class PlayerMissile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        end = new Vector3(mouseLocation.x, mouseLocation.y, -1f);
+        Vector3 crosshareLocation = GameObject.Find("Crosshare").transform.position;
+        end = new Vector3(crosshareLocation.x, crosshareLocation.y, -1f);
         start = this.transform.position;
         moveDistance = (end - start).magnitude;
 	}
@@ -24,14 +24,6 @@ public class PlayerMissile : MonoBehaviour {
     {
         this.transform.Translate((end - start).normalized * Time.deltaTime * moveSpeed);
         if((this.transform.position - start).magnitude >= moveDistance)
-        {
-            explodeMissile();
-        }
-    }
-
-    void OnTriggerEnter2D (Collider2D col)
-    {
-        if(col.gameObject.tag == "Explosion")
         {
             explodeMissile();
         }

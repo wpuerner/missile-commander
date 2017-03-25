@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Collections.Generic;
 
 public class MissileBattery : MonoBehaviour {
 
@@ -8,8 +10,13 @@ public class MissileBattery : MonoBehaviour {
 
     public GameObject playerMissile;
 
+    Stack<GameObject> playerMissileStock;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+
+        playerMissileStock = new Stack<GameObject>();
+
         foreach (Transform child in this.transform)
         {
             if(child.gameObject.name == "MissileStartMarker")
@@ -30,14 +37,41 @@ public class MissileBattery : MonoBehaviour {
 
         if(Input.GetKeyDown(fireMissileKey))
         {
-            GameObject firedMissile = Instantiate(playerMissile, missileStartMarker.transform.position,
+            if(playerMissileStock.Count > 0)
+            {
+                GameObject retrievedPlayerMissile = playerMissileStock.Pop();
+                retrievedPlayerMissile.GetComponent<SpriteRenderer>().enabled = false;
+
+                GameObject firedMissile = Instantiate(playerMissile, missileStartMarker.transform.position,
                 Quaternion.identity) as GameObject;
+
+                if (this.gameObject.name == "CenterMissileBattery")
+                {
+                    firedMissile.GetComponent<PlayerMissile>().moveSpeed = firedMissile.GetComponent<PlayerMissile>().moveSpeed * 1.2f;
+                }
+            }
+
+            
+            
         }
 	
 	}
 
-    void fireMissile()
+    public void generateMissileStock()
     {
+        Debug.Log(this.gameObject.name + ": Generating missile stock");
+        while(playerMissileStock.Count > 0)
+        {
+            GameObject retrievedPlayerMissile = playerMissileStock.Pop();
+        }
 
+        foreach(Transform child in this.transform)
+        {
+            if (child.name == "stockedPlayerMissile")
+            {
+                child.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                playerMissileStock.Push(child.gameObject);
+            }
+        }
     }
 }
